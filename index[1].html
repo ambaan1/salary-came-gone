@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Salary Came… Gone! 💸</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:linear-gradient(135deg,#111827,#312e81);min-height:100vh;color:#fff}
+.container{max-width:760px;margin:auto;padding:35px 18px}.hero{text-align:center;margin-bottom:25px}.hero h1{font-size:42px;margin:5px 0}.hero p{color:#cbd5e1}
+.card{background:rgba(255,255,255,.1);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.15);border-radius:22px;padding:25px;box-shadow:0 20px 50px rgba(0,0,0,.25)}
+label{display:block;margin:14px 0 6px;color:#e2e8f0;font-weight:600}.row{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+input{width:100%;padding:14px;border:0;border-radius:12px;background:#fff;color:#111827;font-size:16px;outline:none}
+button{width:100%;margin-top:22px;padding:15px;border:0;border-radius:13px;background:#fbbf24;color:#111827;font-size:18px;font-weight:800;cursor:pointer}
+button:hover{filter:brightness(1.08)}.result{display:none;margin-top:22px}.numbers{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.box{background:rgba(0,0,0,.2);padding:18px;border-radius:15px;text-align:center}.box small{display:block;color:#cbd5e1}.box strong{display:block;font-size:25px;margin-top:6px}.message{text-align:center;font-size:21px;font-weight:800;margin:22px 0 5px}.tip{text-align:center;color:#cbd5e1}.footer{text-align:center;color:#94a3b8;font-size:13px;margin-top:20px}
+@media(max-width:600px){.hero h1{font-size:32px}.row,.numbers{grid-template-columns:1fr}.container{padding:25px 14px}}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="hero">
+    <div style="font-size:48px">💸</div>
+    <h1>Salary Came… Gone!</h1>
+    <p>Calculate where your salary disappears every month 😭</p>
+  </div>
+  <div class="card">
+    <div class="row">
+      <div><label>Monthly Salary</label><input id="salary" type="number" min="0" placeholder="5000"></div>
+      <div><label>Rent</label><input id="rent" type="number" min="0" placeholder="1250"></div>
+      <div><label>Food</label><input id="food" type="number" min="0" placeholder="600"></div>
+      <div><label>Transport</label><input id="transport" type="number" min="0" placeholder="300"></div>
+      <div><label>Shopping</label><input id="shopping" type="number" min="0" placeholder="400"></div>
+      <div><label>Loans / Bills</label><input id="bills" type="number" min="0" placeholder="1000"></div>
+    </div>
+    <label>Other Expenses</label><input id="other" type="number" min="0" placeholder="250">
+    <button onclick="calculate()">WHERE DID MY SALARY GO? 🔍</button>
+
+    <div class="result" id="result">
+      <div class="numbers">
+        <div class="box"><small>Salary</small><strong id="outSalary"></strong></div>
+        <div class="box"><small>Expenses</small><strong id="outExpenses"></strong></div>
+        <div class="box"><small>Balance</small><strong id="outBalance"></strong></div>
+      </div>
+      <div class="message" id="message"></div>
+      <div class="tip" id="tip"></div>
+    </div>
+  </div>
+  <div class="footer">Made for people whose salary has a very short life 😂</div>
+</div>
+<script>
+const ids=['salary','rent','food','transport','shopping','bills','other'];
+function n(id){return Number(document.getElementById(id).value)||0}
+function money(x){return 'QAR '+x.toLocaleString(undefined,{minimumFractionDigits:0,maximumFractionDigits:2})}
+function calculate(){
+ const salary=n('salary');
+ const expenses=ids.slice(1).reduce((s,id)=>s+n(id),0);
+ const balance=salary-expenses;
+ document.getElementById('outSalary').textContent=money(salary);
+ document.getElementById('outExpenses').textContent=money(expenses);
+ document.getElementById('outBalance').textContent=money(balance);
+ let msg,tip;
+ if(salary<=0){msg='Bro… first find the salary! 😂';tip='Enter your monthly salary to start.'}
+ else if(balance<0){msg='🚨 SALARY HAS ENTERED NEGATIVE MODE!';tip='Your expenses are higher than your salary. Time for an emergency meeting with your wallet.'}
+ else if(balance<salary*.1){msg='😭 Salary came… and immediately disappeared!';tip='Less than 10% is left. Your wallet needs help.'}
+ else if(balance<salary*.3){msg='😅 Salary is still alive… barely.';tip='You are spending most of your salary. Try cutting one expense.'}
+ else {msg='🎉 Your salary survived this month!';tip='Nice! Keep some of that balance as savings.'}
+ document.getElementById('message').textContent=msg;
+ document.getElementById('tip').textContent=tip;
+ document.getElementById('result').style.display='block';
+}
+</script>
+</body>
+</html>
